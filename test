@@ -8,12 +8,12 @@
 
 //global parametres
 struct Data_Package {
-  byte a = 0;
-  byte b = 125;
-  byte c = 255;
-  int d = 1024;
-  float e = 3.141592;
-  String f = "Test";
+  byte a;
+  byte b;
+  byte c;
+  int d;
+  float e;
+  String f;
 };
 RF24 radio(7, 8); // CE, CSN
 const byte addresses[][6] = {"00001", "00002"};
@@ -122,28 +122,34 @@ void loop() {
     }
   }
   */
-  if(radio.available()){
+  
     Data_Package angleValue ;
     angleValue.a=1;
     angleValue.b=0;
     angleValue.c=1;
     angleValue.d=0;
     angleValue.e=1;
-    angleValue.f="l";
-  radio.write(&angleValue, sizeof(Data_Package));
-   radio.startListening();
-    
-        radio.read(&buttonState, sizeof(Data_Package));
-        Serial.print(buttonState.a);
-        if(buttonState.a==1){
-            sys_ON();
-            last = millis();
-            
-        }
-        
+    angleValue.f="xxx";
+    if(radio.available()){
+      radio.write(&angleValue, sizeof(Data_Package));
+      radio.startListening();
+      radio.read(&buttonState, sizeof(Data_Package));
+      Serial.print("a: ");
+      Serial.print(buttonState.a);
+      Serial.print(" b: ");
+      Serial.print(buttonState.b);
+      Serial.print(" c: ");
+      Serial.print(buttonState.c);
+      Serial.print(" d: ");
+      Serial.print(buttonState.d);
+      Serial.print(" e: ");
+      Serial.print(buttonState.e);
+      Serial.print(" f: ");
+      Serial.println(buttonState.f);
+      if(buttonState.a==1){
+         sys_ON();
+         last = millis();
+      }}
     radio.stopListening();  
   }
   
-
-
-}
